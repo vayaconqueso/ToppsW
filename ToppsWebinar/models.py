@@ -22,3 +22,15 @@ class Choice(models.Model):
     votes = models.IntegerField(default=0)
     def __str__(self):
         return self.choice_text
+
+class Quiz1_Question(models.Model):
+    question_text = models.CharField(max_length=300)
+    def __str__(self):
+        return self.question_text
+
+class Quiz1_Answer(models.Model):
+    question = models.ForeignKey(Quiz1_Question, on_delete=models.CASCADE)
+    answer_text = models.CharField(max_length=300)
+    correct_answer = models.BooleanField(default=False)
+    def __str__(self):
+        return self.answer_text
