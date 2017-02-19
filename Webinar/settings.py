@@ -50,7 +50,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'azure_2e6763e229125520c4bf328d9f2a60fa@azure.com'
+EMAIL_HOST_PASSWORD = 'P@ss4p@c3!'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
 ROOT_URLCONF = 'Webinar.urls'
+
+LOGIN_REDIRECT_URL = 'ToppsWebinar:landing'
 
 TEMPLATES = [
     {

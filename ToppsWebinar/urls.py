@@ -11,4 +11,6 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/results/$', views.ResultsView.as_view(), name='results'),
     url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),
     url(r'^Quiz1/(?P<question_id>[0-9]+)/$', login_required(views.quiz1_question), name='quiz1_question'),
+    url(r'^(?P<question_id>[0-9]+)/answer/$', views.quiz1_answer, name='answer'),
+    url(r'^webinar/$', login_required(views.webinar), name='webinar'),
 ]

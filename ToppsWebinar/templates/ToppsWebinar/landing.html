@@ -7,8 +7,10 @@
 <body>
 
 <ul>
-    <li><a href="webinar.html"> View the Webinar</a><br /></li>
-    <li><a href="{% url 'ToppsWebinar:quiz1_question' current_question %}">Take the Quiz</a></li>
+    <li><a href="{% url 'ToppsWebinar:webinar' %}"> View the Webinar</a></li>
+    {% if watched_status %}
+        <li><a href="{% url 'ToppsWebinar:quiz1_question' current_question %}">Take the Quiz</a></li>
+    {% endif %}
 </ul>
 
 </body>
