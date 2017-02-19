@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Quiz1_Question, Quiz1_Answer
+from .models import Quiz1_Question, Quiz1_Answer, Profile
 # Register your models here.
 
 
@@ -17,4 +17,16 @@ class QuestionAdmin(admin.ModelAdmin):
     search_fields = ['question_text']
 
 
+"""
+class ProfileInline(admin.StackedInline):
+    model = Profile
+
+class ExtendedUser(admin.ModelAdmin):
+    inlines = [ProfileInline]
+
+admin.site.unregister(User)
+admin.site.register(User, ExtendedUser)
+"""
 admin.site.register(Quiz1_Question, QuestionAdmin)
+admin.site.register(Profile)
+

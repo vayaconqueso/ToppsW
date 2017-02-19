@@ -1,5 +1,8 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 import datetime
 
 # Create your models here.
@@ -34,3 +37,18 @@ class Quiz1_Answer(models.Model):
     correct_answer = models.BooleanField(default=False)
     def __str__(self):
         return self.answer_text
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    webinar_viewed = models.BooleanField(default=False)
+    current_q1_question = models.IntegerField(default=1)
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()

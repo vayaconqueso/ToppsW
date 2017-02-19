@@ -7,18 +7,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Questions</title>
+    <title>Webinar Homepage</title>
 </head>
 
 <body>
-{% if latest_question_list %}
-    <ul>
-    {% for question in latest_question_list %}
-        <li><a href="{%  url 'ToppsWebinar:detail' question.id %}">{{ question.question_text }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No polls are available.</p>
-{% endif %}
+<a href="../accounts/login"> Login Please</a>
+<!--
+<ul>
+    <li><a href="webinar.html"> View the Webinar</a><br /></li>
+    <li><a href="% url ToppsWebinar:quiz1_question %}">Take the Quiz</a></li>
+</ul>
+-->
 </body>
 </html>
