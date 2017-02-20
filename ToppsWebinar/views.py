@@ -1,11 +1,14 @@
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 
-from .models import Choice, Question, Quiz1_Answer, Quiz1_Question, Progress_Report
+
+from .models import Choice, Question, \
+    Quiz1_Answer, Quiz1_Question, Progress_Report
 
 
 def index(request):
@@ -24,15 +27,41 @@ def webinar(request):
     return render(request, 'ToppsWebinar/webinar.html')
 
 
-def quiz1_question(request, question_id):
-    question = get_object_or_404(Quiz1_Question, pk=question_id)
-    return render(request, 'ToppsWebinar/q1.html', {'question': question})
+def quiz1_controller(request, question_id):
+    # check for completion of the Webinar
+    max_questions = Quiz1_Question.objects.count()
+    current_user = request.user
+    user = User.objects.get(username=current_user)
+    if user.progress_report.current_q1_question > max_questions:
+        if user.progress_report.quiz1_complete == False:
+            # send email notification of completion
+            send_mail(
+                'Certification Webinar complete!',
+                '{0} has completed the webinar.'.format(
+                    user.first_name + user.last_name),
+                'toppscert@toppsproducts.com',
+                ['dwarner@cenetric.com'],
+                fail_silently=True,
+            )
+            # update the model to record completion status
+            user.progress_report.quiz1_complete = True
+            user.progress_report.quiz1_completion_date = timezone.now()
+            user.save()
+        return render(request, 'ToppsWebinar/q1complete.html')
+    # prevent users from skipping around in the quiz
+    elif int(question_id) != int(user.progress_report.current_q1_question):
+        return HttpResponse('Unauthorized', status=403)
+    # continue to the next question
+    else:
+        question = get_object_or_404(Quiz1_Question, pk=question_id)
+        return render(request, 'ToppsWebinar/q1.html', {'question': question})
 
 
 def quiz1_answer(request, question_id):
     question = get_object_or_404(Quiz1_Question, pk=question_id)
     try:
-        selected_choice = question.quiz1_answer_set.get(pk=request.POST['answer'])
+        selected_choice = \
+            question.quiz1_answer_set.get(pk=request.POST['answer'])
     except (KeyError, Quiz1_Answer.DoesNotExist):
         # Redisplay the question voting form.
         return render(request, 'ToppsWebinar/q1.html', {
@@ -45,19 +74,24 @@ def quiz1_answer(request, question_id):
             user = User.objects.get(username=current_user)
             user.progress_report.current_q1_question += 1
             user.save()
-            return HttpResponseRedirect(reverse('ToppsWebinar:quiz1_question', args=(question.id +1,)))
+            return HttpResponseRedirect(reverse(
+                'ToppsWebinar:quiz1_question', args=(question.id + 1,)))
         else:
             return render(request, 'ToppsWebinar/q1.html', {
                 'question': question,
                 'error_message': "I'm sorry, that is incorrect. Please try again.",
             })
 
+
 """
-***********************************************************************************************************************
+********************************************************************************
 """
+
+
 class DetailView(generic.DetailView):
     model = Question
     template_name = "ToppsWebinar/detail.html"
+
     def get_queryset(self):
         return Question.objects.filter(pub_date__lte=timezone.now())
 
@@ -66,12 +100,13 @@ class ResultsView(generic.DetailView):
     model = Question
     template_name = "ToppsWebinar/results.html"
 
+
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
-        #Redisplay the question voting form.
+        # Redisplay the question voting form.
         return render(request, 'ToppsWebinar/detail.html', {
             'question': question,
             'error_message': "You didn't select a choice.",
@@ -82,4 +117,5 @@ def vote(request, question_id):
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
-        return HttpResponseRedirect(reverse('ToppsWebinar:results', args=(question.id,)))
+        return HttpResponseRedirect(
+            reverse('ToppsWebinar:results', args=(question.id,)))
