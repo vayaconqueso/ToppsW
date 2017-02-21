@@ -1,17 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-{% load static %}
+{% block title %}Topps{% endblock %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'ToppsWebinar/style.css' %}" />
-
-<head>
-    <meta charset="UTF-8">
-    <title>Webinar Homepage</title>
-</head>
-
-<body>
-<a href="../accounts/login"> Login Please</a>
-
-</body>
-</html>
+{% block content %}
+    <div class="jumbotron">
+        <div class="row">
+            <div class="col-xs-8">
+                <img src="https://toppscerttest.blob.core.windows.net/images/ToppsLogo"/>
+                <h2><a href="../accounts/login"> Login Please</a></h2>
+            </div>
+            <div class="col-xs-4 image-splash-container">
+                <div class="image-splash-overflow">
+                    <img class="image-splash" src="https://toppscerttest.blob.core.windows.net/images/toppsWorker.jpg" height="100%" />
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

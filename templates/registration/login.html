@@ -3,10 +3,25 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-  <h2>Login</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-  </form>
+    <div class="jumbotron">
+        <div class="row">
+                    <div class="col-xs-9">
+                        <img src="https://toppscerttest.blob.core.windows.net/images/ToppsLogo"/>
+                        <h2>Login</h2>
+                        <hr/>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit">Login</button>
+                        </form>
+                    </div>
+                    <div class="col-xs-3 image-splash-container">
+                        <div class="image-splash-overflow">
+                            <img class="image-splash" src="https://toppscerttest.blob.core.windows.net/images/toppsWorker.jpg" height="100%" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

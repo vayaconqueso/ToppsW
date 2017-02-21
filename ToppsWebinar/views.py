@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.views import generic
@@ -25,6 +25,14 @@ def landing(request):
 
 def webinar(request):
     return render(request, 'ToppsWebinar/webinar.html')
+
+
+def wbwatched(request):
+    current_user = request.user
+    user = User.objects.get(username=current_user)
+    user.progress_report.webinar_viewed = True
+    user.save()
+    return redirect('/ToppsWebinar/landing')
 
 
 def quiz1_controller(request, question_id):

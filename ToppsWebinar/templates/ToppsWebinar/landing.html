@@ -1,17 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Topps Webinar Landing Page</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-<ul>
-    <li><a href="{% url 'ToppsWebinar:webinar' %}"> View the Webinar</a></li>
-    {% if watched_status %}
-        <li><a href="{% url 'ToppsWebinar:quiz1_question' current_question %}">Take the Quiz</a></li>
-    {% endif %}
-</ul>
+{% block title %}Topps{% endblock %}
 
-</body>
-</html>
+{% block content %}
+    <div class="jumbotron">
+        <div class="row">
+            <div class="col-xs-8">
+                <img src="https://toppscerttest.blob.core.windows.net/images/ToppsLogo"/>
+                <br/>
+                <br/>
+                <br/>
+                <h2>Welcome to Certification Webinar Training</h2>
+                <p>
+                    <img src="https://toppscerttest.blob.core.windows.net/images/check_list.png" />
+                    <a href="{% url 'ToppsWebinar:webinar' %}"> View the Webinar</a>
+                </p>
+
+                <p>
+                    {% if watched_status %}
+                        <img src="https://toppscerttest.blob.core.windows.net/images/check_list.png" />
+                        <a href="{% url 'ToppsWebinar:quiz1_question' current_question %}">Take the Quiz</a>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="col-xs-4 image-splash-container">
+                <div class="image-splash-overflow">
+                    <img class="image-splash" src="https://toppscerttest.blob.core.windows.net/images/toppsWorker.jpg" height="100%" />
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

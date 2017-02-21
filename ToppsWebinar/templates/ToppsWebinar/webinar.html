@@ -1,10 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-Webinar Placeholder
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Topps{% endblock %}
+
+{% block content %}
+    <div class="row jumbotron slide-page" onload="init()">
+        <div id="slide-links" class="col-xs-2">
+
+        </div>
+        <div id="slide-container" class="col-xs-10">
+            <div class="slide-video-container">
+                <video id="slide-video" class="video-js" controls autoplay preload="auto" width="640" height="420"
+                       poster="/static/images/01.png" data-setup="{}">
+                    <source src="https://toppscerttest.blob.core.windows.net/videos/001.mp4" type='video/mp4'>
+                    <p class="vjs-no-js">
+                        To view this video please enable JavaScript, and consider upgrading to a web browser that
+                        <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                    </p>
+                </video>
+            </div>
+        </div>
+    </div>
+    <script src="https://vjs.zencdn.net/5.4.6/video.js"></script>
+    <script src="/static/js/SlideController.js"></script>
+{% endblock %}
